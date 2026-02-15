@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 40px;
+            background-color: #f4f6f9;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>📊 Admin Analytics Dashboard</h1>
+
+    <div class="card">
+        <h2>💰 Total Revenue</h2>
+        <p>₹ {{ total_revenue }}</p>
+    </div>
+
+    <div class="card">
+        <h2>🎬 Most Popular Movies</h2>
+        <ul>
+            {% for movie in popular_movies %}
+                <li>{{ movie.movie__name }} - {{ movie.total_bookings }} bookings</li>
+            {% empty %}
+                <li>No bookings yet</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🏢 Busiest Theaters</h2>
+        <ul>
+            {% for theater in busiest_theaters %}
+                <li>{{ theater.theater__name }} - {{ theater.total_bookings }} bookings</li>
+            {% empty %}
+                <li>No bookings yet</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>

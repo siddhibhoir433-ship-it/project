@@ -1,0 +1,110 @@
+{% extends "users/basic.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Movies</h1>
+
+    <!-- 🔍 Search + Filters -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-10">
+            <form method="GET" action="{% url 'movie_list' %}">
+                <div class="row g-2">
+
+                    <div class="col-md-4">
+                        <input class="form-control" name="search"
+                               placeholder="Search movies" type="text"
+                               value="{{ request.GET.search|default_if_none:'' }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <select class="form-control" name="genre">
+                            <option value="">All Genres</option>
+                            {% for g in genres %}
+                                <option value="{{ g }}" {% if g == selected_genre %}selected{% endif %}>
+                                    {{ g }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select class="form-control" name="language">
+                            <option value="">All Languages</option>
+                            {% for l in languages %}
+                                <option value="{{ l }}" {% if l == selected_language %}selected{% endif %}>
+                                    {{ l }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" type="submit">
+                            Apply
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 🎬 Movie Cards -->
+    <div class="row">
+        {% for movie in movies %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+
+                <img src="{{ movie.image.url }}" class="card-img-top"
+                     alt="{{ movie.name }}"
+                     style="height: 300px; object-fit: cover;">
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.name }}</h5>
+
+                    <p class="card-text">
+                        ⭐ {{ movie.rating }}
+                    </p>
+
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Genre: {{ movie.genre }} | Language: {{ movie.language }}
+                        </small>
+                    </p>
+
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Cast: {{ movie.cast }}
+                        </small>
+                    </p>
+                </div>
+
+                <div class="card-footer bg-white border-top-0 d-flex gap-2">
+
+                    <!-- 🎟 Book Tickets -->
+                    <a href="{% url 'theater_list' movie.id %}"
+                       class="btn btn-outline-primary w-50">
+                        View Theaters
+                    </a>
+
+                    <!-- 🎬 Trailer Button -->
+                    {% if movie.trailer_url %}
+                        <a href="{{ movie.trailer_url }}"
+                           target="_blank"
+                           class="btn btn-danger w-50">
+                            Watch Trailer
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="lead">No movies found.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

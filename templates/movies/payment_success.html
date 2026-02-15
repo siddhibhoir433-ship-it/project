@@ -1,0 +1,23 @@
+{% extends "users/basic.html" %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+      <div class="card shadow p-4">
+        <h1 class="text-success mb-3">🎉 Payment Successful!</h1>
+        <p class="lead">
+          Your payment was completed successfully.
+        </p>
+        <p>
+          🎟 Your seats have been booked and  
+          📧 a confirmation email has been sent to your registered email.
+        </p>
+
+        <a href="{% url 'movie_list' %}" class="btn btn-primary mt-3">
+          Book Another Movie
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
