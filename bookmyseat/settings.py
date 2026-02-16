@@ -10,7 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-c8aetlj(=vp90n@#yoc^&d(_6ivp(d!bv-4-f!r$lawptjzrwu'
 
-DEBUG = True
+# 🔥 IMPORTANT FOR DEPLOYMENT
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -27,6 +28,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ Added for deployment
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -40,7 +42,6 @@ AUTH_USER_MODEL = 'auth.User'
 
 # EMAIL CONFIG (GMAIL)
 
-
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
@@ -52,8 +53,7 @@ EMAIL_HOST_PASSWORD = "ckpu vvvl vanw qvqi"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-# ✅ STRIPE CONFIG (TEST MODE)
-
+# STRIPE CONFIG (TEST MODE)
 
 STRIPE_PUBLIC_KEY = ""
 STRIPE_SECRET_KEY = ""
@@ -68,7 +68,7 @@ LOGIN_URL = '/login/'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # ✅ safer path
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -102,6 +102,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+
+# 🔥 STATIC FILE SETTINGS (VERY IMPORTANT FOR RENDER)
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
